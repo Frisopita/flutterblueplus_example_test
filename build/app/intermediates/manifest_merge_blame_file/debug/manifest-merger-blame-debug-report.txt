@@ -1,0 +1,121 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.boskokg.flutter_blue_plus_example"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="19"
+9        android:targetSdkVersion="33" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\debug\AndroidManifest.xml:6:5-66
+14-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\debug\AndroidManifest.xml:6:22-64
+15    <!-- Allow Bluetooth -->
+16    <uses-feature
+16-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:4:5-6:35
+17        android:name="android.hardware.bluetooth_le"
+17-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:5:9-53
+18        android:required="true" /> <!-- Request legacy Bluetooth permissions on older devices. -->
+18-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:6:9-32
+19    <uses-permission
+19-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:8:5-9:38
+20        android:name="android.permission.BLUETOOTH"
+20-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:8:22-65
+21        android:maxSdkVersion="30" />
+21-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:9:9-35
+22    <uses-permission
+22-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:10:5-11:38
+23        android:name="android.permission.BLUETOOTH_ADMIN"
+23-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:10:22-71
+24        android:maxSdkVersion="30" />
+24-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:11:9-35
+25    <!--
+26 Needed only if your app looks for Bluetooth devices.
+27        If your app doesn't use Bluetooth scan results to derive physical
+28        location information, you can strongly assert that your app
+29        doesn't derive physical location.
+30    -->
+31    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+31-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:16:5-73
+31-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:16:22-70
+32    <!--
+33 Needed only if your app makes the device discoverable to Bluetooth
+34         devices.
+35    -->
+36    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+36-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:19:5-78
+36-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:19:22-75
+37    <!--
+38 Needed only if your app communicates with already-paired Bluetooth
+39      devices.
+40    -->
+41    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+41-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:22:5-76
+41-->C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\android\app\src\main\AndroidManifest.xml:22:22-73
+42    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+42-->[:flutter_blue_plus] C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\build\flutter_blue_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:19:5-79
+42-->[:flutter_blue_plus] C:\Users\FridaAndrade\AndroidStudioProjects\flutter_blue_plus\example\build\flutter_blue_plus\intermediates\merged_manifest\debug\AndroidManifest.xml:19:22-76
+43    <!--
+44 If your application supports a service and can run on Android 10 (API level 29) or Android 11, you must also declare 
+45    the ACCESS_BACKGROUND_LOCATION permission to discover Bluetooth devices.
+46    -->
+47    <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
+48    <application
+49        android:name="android.app.Application"
+50        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+50-->[androidx.core:core:1.6.0] C:\Users\FridaAndrade\.gradle\caches\transforms-3\2b13f2dac15a6178b2b689dbb7518089\transformed\core-1.6.0\AndroidManifest.xml:24:18-86
+51        android:debuggable="true"
+52        android:icon="@mipmap/ic_launcher"
+53        android:label="flutter_blue_plus_example" >
+54        <activity
+55            android:name="com.boskokg.flutter_blue_plus_example.MainActivity"
+56            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+57            android:exported="true"
+58            android:hardwareAccelerated="true"
+59            android:launchMode="singleTop"
+60            android:theme="@style/LaunchTheme"
+61            android:windowSoftInputMode="adjustResize" >
+62
+63            <!--
+64                 Specifies an Android theme to apply to this Activity as soon as
+65                 the Android process has started. This theme is visible to the user
+66                 while the Flutter UI initializes. After that, this theme continues
+67                 to determine the Window background behind the Flutter UI.
+68            -->
+69            <meta-data
+70                android:name="io.flutter.embedding.android.NormalTheme"
+71                android:resource="@style/NormalTheme" />
+72
+73            <intent-filter>
+74                <action android:name="android.intent.action.MAIN" />
+75
+76                <category android:name="android.intent.category.LAUNCHER" />
+77            </intent-filter>
+78        </activity>
+79        <!--
+80             Don't delete the meta-data below.
+81             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+82        -->
+83        <meta-data
+84            android:name="flutterEmbedding"
+85            android:value="2" />
+86
+87        <uses-library
+87-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+88            android:name="androidx.window.extensions"
+88-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+89            android:required="false" />
+89-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+90        <uses-library
+90-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+91            android:name="androidx.window.sidecar"
+91-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+92            android:required="false" />
+92-->[androidx.window:window:1.0.0-beta04] C:\Users\FridaAndrade\.gradle\caches\transforms-3\ab9b16f4ca3239a1d64f37d1c87af8a3\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+93    </application>
+94
+95</manifest>
