@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -42,6 +43,13 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
   Map<Guid, StreamSubscription> valueChangedSubscriptions = {};
   BluetoothDeviceState deviceState = BluetoothDeviceState.disconnected;
 
+  static const String CHARACTERISTIC_UUID =
+      "beb5483e-36e1-4688-b7f5-ea07361b26a8";
+  static const String kMYDEVICE = "myDevice";
+  String _myDeviceId;
+  String _temperature = "?";
+  String _humidity = "?";
+
   @override
   void initState() {
     super.initState();
@@ -57,6 +65,18 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
         state = s;
       });
     });
+
+    _loadMyDeviceId();
+  }
+
+  _loadMyDeviceId() async {
+    SharedPreferences prefs = await _prefs;
+    _myDeviceId = prefs.getString(kMYDEVICE) ?? "";
+    print("_myDeviceId : " + _myDeviceId);
+
+    if (_myDeviceId.isNotEmpty) {
+      _startScan();
+    }
   }
 
   @override
@@ -79,10 +99,16 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
         ]*/
     )
         .listen((scanResult) {
-      print('localName: ${scanResult.advertisementData.localName}');
-      print(
-          'manufacturerData: ${scanResult.advertisementData.manufacturerData}');
-      print('serviceData: ${scanResult.advertisementData.serviceData}');
+//      print('localName: ${scanResult.advertisementData.localName}');
+//      print(
+//          'manufacturerData: ${scanResult.advertisementData.manufacturerData}');
+//      print('serviceData: ${scanResult.advertisementData.serviceData}');
+
+      if (_myDeviceId == scanResult.device.id.toString()) {
+        _stopScan();
+        _connect(scanResult.device);
+      }
+
       setState(() {
         scanResults[scanResult.device.id] = scanResult;
       });
@@ -127,6 +153,11 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
         device.discoverServices().then((s) {
           setState(() {
             services = s;
+
+            print("*** device.id : ${device.id.toString()}");
+
+            _restoreDeviceId(device.id.toString());
+            _TurnOnCharacterService();
           });
         });
       }
@@ -177,9 +208,12 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
       await device.setNotifyValue(c, true);
       // ignore: cancel_subscriptions
       final sub = device.onValueChanged(c).listen((d) {
-        setState(() {
-          print('onValueChanged $d');
-        });
+        final decoded = utf8.decode(d);
+        _DataParser(decoded);
+
+//        setState(() {
+//          print('onValueChanged $d');
+//        });
       });
       // Add to map
       valueChangedSubscriptions[c.uuid] = sub;
@@ -310,7 +344,7 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Flutter Longev BLE'),
+          title: const Text('ESP32 MY DHT APP'),
           actions: _buildActionButtons(),
         ),
         floatingActionButton: _buildScanningButton(),
@@ -324,5 +358,118 @@ class _FlutterBleAppState extends State<FlutterBleApp> {
         ),
       ),
     );
+  }
+
+  Future<void> _restoreDeviceId(String id) async {
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString(kMYDEVICE, id);
+  }
+
+  _TurnOnCharacterService() {
+    services.forEach((service) {
+      service.characteristics.forEach((character) {
+        if (character.uuid.toString() == CHARACTERISTIC_UUID) {
+          _setNotification(character);
+        }
+      });
+    });
+  }
+
+  _bulldMyWidget() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Card(
+            child: Container(
+              width: 150,
+              height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Image.asset('images/temperature.png'),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Temperature",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Text(
+                    _temperature,
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Card(
+            child: Container(
+              width: 150,
+              height: 200,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Image.asset('images/humidity.png'),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Humidity",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Expanded(
+                    child: Container(),
+                  ),
+                  Text(
+                    _humidity,
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _DataParser(String data) {
+    if (data.isNotEmpty) {
+      var tempValue = data.split(",")[0];
+      var humidityValue = data.split(",")[1];
+
+      print("tempValue: ${tempValue}");
+      print("humidityValue: ${humidityValue}");
+
+      setState(() {
+        _temperature = tempValue + "'C";
+        _humidity = humidityValue + "%";
+      });
+    }
   }
 }
