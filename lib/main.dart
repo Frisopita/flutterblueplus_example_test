@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+import 'dart:convert' show utf8;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -194,6 +195,7 @@ class FindDevicesScreen extends StatelessWidget {
   }
 }
 
+
 class DeviceScreen extends StatelessWidget {
   const DeviceScreen({Key? key, required this.device}) : super(key: key);
 
@@ -226,6 +228,8 @@ class DeviceScreen extends StatelessWidget {
                     onNotificationPressed: () async {
                       await c.setNotifyValue(!c.isNotifying);
                       await c.read();
+                      //var decoded = utf8.decode(_getRandomBytes());
+                      //dataParser(decoded);
                     },
                     descriptorTiles: c.descriptors
                         .map(
@@ -242,6 +246,19 @@ class DeviceScreen extends StatelessWidget {
           ),
         )
         .toList();
+  }
+
+  dataParser(String data) {
+    if (data.isNotEmpty) {
+      var tempValue = data.split(",")[0];
+      var humidityValue = data.split(",")[1];
+
+      _temperature = tempValue + "'C";
+      _humidity = humidityValue + "%";
+      print("tempValue: $tempValue");
+      print("humidityValue: $humidityValue");
+      
+    }
   }
 
   @override
@@ -304,6 +321,7 @@ class DeviceScreen extends StatelessWidget {
                               style: Theme.of(context).textTheme.bodySmall);
                         })
                         : Text('', style: Theme.of(context).textTheme.bodySmall),
+
                   ],
                 ),
                 title: Text(
@@ -387,9 +405,14 @@ class DeviceScreen extends StatelessWidget {
   }
 }
 
-class MyData extends StatelessWidget {
+class MyData extends StatefulWidget {
   const MyData({super.key});
-  
+
+  @override
+  State<MyData> createState() => _MyDataState();
+}
+
+class _MyDataState extends State<MyData> {
   @override
   Widget build(BuildContext context) {
       return Scaffold(
@@ -480,4 +503,6 @@ class MyData extends StatelessWidget {
   );
   }   
 
+
 }
+
